@@ -15,7 +15,7 @@ router.get('/books', async (req, res) => {
 });
 
 // Agregar un nuevo libro (requiere autenticación)
-router.post('/books', auth, async (req, res) => {
+router.post('/books', async (req, res) => {
   try {
     const book = new Book(req.body);
     await book.save();
@@ -26,7 +26,7 @@ router.post('/books', auth, async (req, res) => {
 });
 
 // Actualizar un libro (requiere autenticación)
-router.put('/books/:id', auth, async (req, res) => {
+router.put('/books/:id', async (req, res) => {
   try {
     const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updatedBook);
@@ -36,7 +36,7 @@ router.put('/books/:id', auth, async (req, res) => {
 });
 
 // Eliminar un libro (requiere autenticación)
-router.delete('/books/:id', auth, async (req, res) => {
+router.delete('/books/:id', async (req, res) => {
   try {
     await Book.findByIdAndDelete(req.params.id);
     res.status(204).send();
