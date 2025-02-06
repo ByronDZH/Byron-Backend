@@ -13,7 +13,11 @@ const PREFIX = process.env.PREFIX || ''; // Prefijo para las rutas
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: '*', // 🔹 Permitir todas las conexiones (para pruebas)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Conexión a MongoDB
 mongoose.connect(DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
