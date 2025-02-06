@@ -16,10 +16,12 @@ router.get('/books', async (req, res) => {
 
 // Agregar un nuevo libro (requiere autenticación)
 router.post('/books', async (req, res) => {
+  console.log('📥 Datos recibidos en el backend:', req.body); // 🔍 Verificar datos enviados
+
   const { title, author_id, year, genre_id, synopsis, rating } = req.body;
 
   if (!title || !year) {
-    return res.status(400).json({ message: "Título y año son obligatorios" });
+    return res.status(400).json({ message: "❌ Error: Título y año son obligatorios" });
   }
 
   try {
@@ -27,9 +29,11 @@ router.post('/books', async (req, res) => {
     await newBook.save();
     res.status(201).json(newBook);
   } catch (error) {
-    res.status(500).json({ message: "Error al guardar el libro", error });
+    console.error('❌ Error al guardar el libro:', error);
+    res.status(500).json({ message: "❌ Error interno del servidor", error });
   }
 });
+
 
 
 // Actualizar un libro (requiere autenticación)
