@@ -16,14 +16,21 @@ router.get('/books', async (req, res) => {
 
 // Agregar un nuevo libro (requiere autenticación)
 router.post('/books', async (req, res) => {
+  const { title, author_id, year, genre_id, synopsis, rating } = req.body;
+
+  if (!title || !year) {
+    return res.status(400).json({ message: "Título y año son obligatorios" });
+  }
+
   try {
-    const book = new Book(req.body);
-    await book.save();
-    res.status(201).json(book);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    const newBook = new Book({ title, author_id, year, genre_id, synopsis, rating });
+    await newBook.save();
+    res.status(201).json(newBook);
+  } catch (error) {
+    res.status(500).json({ message: "Error al guardar el libro", error });
   }
 });
+
 
 // Actualizar un libro (requiere autenticación)
 router.put('/books/:id', async (req, res) => {
