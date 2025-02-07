@@ -5,7 +5,7 @@ const newBook = async (req,res) => {
     try{
         let response = await logicDB.newBookDB(book)
         res.status(200).json({
-            'book':response
+            'books':response
         })
         return
     }catch(error){
@@ -18,7 +18,7 @@ const getBook = async (req,res)=>{
     try{
         let response = await logicDB.getBookDB()
         res.status(200).json({
-            'book': response
+            'books': response
         })
     }catch{
         res.status(500).json({error})
@@ -31,7 +31,7 @@ const delBookID = async (req,res)=>{
     try{
         let response = await logicDB.delBookIDDB(book)
         res.status(200).json({
-            'book': response
+            'books': response
         })
     }catch{
         res.status(500).json({error})
@@ -45,11 +45,11 @@ const delBook = async (req,res) => {
         let response = await logicDB.delBookDB(book);
         if(response.deletedCount == 0){
             return res.status(200).json({
-                'book': 'No existe o ya fué eliminado'
+                'books': 'No existe o ya fué eliminado'
             });
         }else{
             return res.status(200).json({
-                'book': response
+                'books': response
             });
         }
         
