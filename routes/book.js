@@ -19,7 +19,7 @@ router.post('/books', async (req, res) => {
 
   const { title, description, genre_id, year, chapters, volumes, status, author_id  } = req.body;
 
-  if (!title || !description || !year || !status ||author_id) {
+  if (!title || !description) {
     return res.status(400).json({ message: "❌ Error: Campos obligatorios " });
   }
 
