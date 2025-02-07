@@ -19,14 +19,14 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Importar rutas con prefijo
+const bookRoutes = require('./routes/book');
+app.use(PREFIX, bookRoutes);  // 🔹 Agregar prefijo a todas las rutas
+
 // Conexión a MongoDB
 mongoose.connect(DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("📌 Conectado a MongoDB Atlas"))
     .catch(err => console.error("❌ Error en la conexión a MongoDB Atlas:", err));
-
-// Importar rutas con prefijo
-const bookRoutes = require('./routes/library');
-app.use(PREFIX, bookRoutes);  // 🔹 Agregar prefijo a todas las rutas
 
 // Iniciar servidor
 app.listen(PORT, () => {

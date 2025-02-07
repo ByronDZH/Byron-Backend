@@ -1,10 +1,9 @@
 const express = require('express');
-const Book = require('../models/book');
-const auth = require('../middleware/auth');
+const Book = require('../services/book.model');
 
 const router = express.Router();
 
-// Obtener todos los libros (abierto al público)
+// Obtener todos los libros
 router.get('/books', async (req, res) => {
   try {
     const books = await Book.find();
@@ -14,18 +13,18 @@ router.get('/books', async (req, res) => {
   }
 });
 
-// Agregar un nuevo libro (requiere autenticación)
+// Agregar un nuevo libro
 router.post('/books', async (req, res) => {
   console.log('📥 Datos recibidos en el backend:', req.body); // 🔍 Verificar datos enviados
 
-  const { title, author_id, year, genre_id, synopsis, rating } = req.body;
+  const { title, description, genre_id, year, chapters, volumes, status, author_id  } = req.body;
 
-  if (!title || !year) {
-    return res.status(400).json({ message: "❌ Error: Título y año son obligatorios" });
+  if (!title || !description || !year || !status ||author_id) {
+    return res.status(400).json({ message: "❌ Error: Campos obligatorios " });
   }
 
   try {
-    const newBook = new Book({ title, author_id, year, genre_id, synopsis, rating });
+    const newBook = new Book({ title, description, genre_id, year, chapters, volumes, status, author_id });
     await newBook.save();
     res.status(201).json(newBook);
   } catch (error) {
@@ -34,9 +33,7 @@ router.post('/books', async (req, res) => {
   }
 });
 
-
-
-// Actualizar un libro (requiere autenticación)
+// Actualizar un libro
 router.put('/books/:id', async (req, res) => {
   try {
     const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -46,7 +43,7 @@ router.put('/books/:id', async (req, res) => {
   }
 });
 
-// Eliminar un libro (requiere autenticación)
+// Eliminar un libro
 router.delete('/books/:id', async (req, res) => {
   try {
     await Book.findByIdAndDelete(req.params.id);
