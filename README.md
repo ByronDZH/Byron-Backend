@@ -39,15 +39,16 @@ If you face CORS issues or SSL certificate errors, try replacing `https` with `h
 
 - **Endpoint**: `POST /api/v1/novels`
 - **Description**: Create a new novel record in the database.
+- **Original Language Enums**:['Chinese', 'Japanese', 'Korean', 'Other'], default: 'Other'
 - **Body**:
 
   ```json
   {
-      "titulo": "Novel Title",
-      "autor": "Author Name",
-      "totalCapitulos": 100,
-      "genero": "Fantasy",
-      "lenguajeOriginal": "Chinese",
+      "title": "Novel Title",
+      "author": "Author Name",
+      "totalChapters": 100,
+      "genre": "Fantasy",
+      "originalLanguage": "Chinese",
       "url": "http://example.com"
   }
   ```
@@ -58,11 +59,11 @@ If you face CORS issues or SSL certificate errors, try replacing `https` with `h
   {
       "novel": {
           "_id": "60b704cb915bc54cf0378df2",
-          "titulo": "Novel Title",
-          "autor": "Author Name",
-          "totalCapitulos": 100,
-          "genero": "Fantasy",
-          "lenguajeOriginal": "Chinese",
+          "title": "Novel Title",
+          "author": "Author Name",
+          "totalChapters": 100,
+          "genre": "Fantasy",
+          "originalLanguage": "Chinese",
           "url": "http://example.com",
           "createdAt": "2025-03-25T12:34:56.789Z",
           "updatedAt": "2025-03-25T12:34:56.789Z"
@@ -81,11 +82,11 @@ If you face CORS issues or SSL certificate errors, try replacing `https` with `h
       "novels": [
           {
               "_id": "60b704cb915bc54cf0378df2",
-              "titulo": "Novel Title",
-              "autor": "Author Name",
-              "totalCapitulos": 100,
-              "genero": "Fantasy",
-              "lenguajeOriginal": "Chinese",
+              "title": "Novel Title",
+              "author": "Author Name",
+              "totalChapters": 100,
+              "genre": "Fantasy",
+              "originalLanguage": "Chinese",
               "url": "http://example.com",
               "createdAt": "2025-03-25T12:34:56.789Z"
           }
@@ -103,11 +104,11 @@ If you face CORS issues or SSL certificate errors, try replacing `https` with `h
   {
       "novel": {
           "_id": "60b704cb915bc54cf0378df2",
-          "titulo": "Novel Title",
-          "autor": "Author Name",
-          "totalCapitulos": 100,
-          "genero": "Fantasy",
-          "lenguajeOriginal": "Chinese",
+          "title": "Novel Title",
+          "author": "Author Name",
+          "totalChapters": 100,
+          "genre": "Fantasy",
+          "originalLanguage": "Chinese",
           "url": "http://example.com"
       }
   }
@@ -121,11 +122,11 @@ If you face CORS issues or SSL certificate errors, try replacing `https` with `h
 
   ```json
   {
-      "titulo": "Updated Title",
-      "autor": "Updated Author",
-      "totalCapitulos": 120,
-      "genero": "Sci-Fi",
-      "lenguajeOriginal": "Japanese"
+      "title": "Updated Title",
+      "author": "Updated Author",
+      "totalChapters": 120,
+      "genre": "Sci-Fi",
+      "originalLanguage": "Japanese"
   }
   ```
 
@@ -135,11 +136,11 @@ If you face CORS issues or SSL certificate errors, try replacing `https` with `h
   {
       "novel": {
           "_id": "60b704cb915bc54cf0378df2",
-          "titulo": "Updated Title",
-          "autor": "Updated Author",
-          "totalCapitulos": 120,
-          "genero": "Sci-Fi",
-          "lenguajeOriginal": "Japanese",
+          "title": "Updated Title",
+          "author": "Updated Author",
+          "totalChapters": 120,
+          "genre": "Sci-Fi",
+          "originalLanguage": "Japanese",
           "url": "http://example.com"
       }
   }
@@ -165,16 +166,17 @@ If you face CORS issues or SSL certificate errors, try replacing `https` with `h
 
 - **Endpoint**: `POST /api/v1/reading-history`
 - **Description**: Create a new reading history record for a specific novel.
+- **Status Enums**: ['reading', 'finished', 'abandoned'], default: 'reading'
 - **Body**:
 
   ```json
   {
       "novelId": "60b704cb915bc54cf0378df2",
-      "fechaInicio": "2025-03-01T00:00:00.000Z",
-      "fechaFin": "2025-03-10T00:00:00.000Z",
-      "capitulosLeidos": 10,
-      "estado": "finished",
-      "comentario": "Really enjoyed this novel!"
+      "startDate": "2025-03-01T00:00:00.000Z",
+      "endDate": "2025-03-10T00:00:00.000Z",
+      "chaptersRead": 10,
+      "status": "finished",
+      "comment": "Really enjoyed this novel!"
   }
   ```
 
@@ -185,11 +187,11 @@ If you face CORS issues or SSL certificate errors, try replacing `https` with `h
       "readingHistory": {
           "_id": "60b704cb915bc54cf0378df3",
           "novelId": "60b704cb915bc54cf0378df2",
-          "fechaInicio": "2025-03-01T00:00:00.000Z",
-          "fechaFin": "2025-03-10T00:00:00.000Z",
-          "capitulosLeidos": 10,
-          "estado": "finished",
-          "comentario": "Really enjoyed this novel!"
+          "startDate": "2025-03-01T00:00:00.000Z",
+          "endDate": "2025-03-10T00:00:00.000Z",
+          "chaptersRead": 10,
+          "status": "finished",
+          "comment": "Really enjoyed this novel!"
       }
   }
   ```
@@ -206,11 +208,11 @@ If you face CORS issues or SSL certificate errors, try replacing `https` with `h
           {
               "_id": "60b704cb915bc54cf0378df3",
               "novelId": "60b704cb915bc54cf0378df2",
-              "fechaInicio": "2025-03-01T00:00:00.000Z",
-              "fechaFin": "2025-03-10T00:00:00.000Z",
-              "capitulosLeidos": 10,
-              "estado": "finished",
-              "comentario": "Really enjoyed this novel!"
+              "startDate": "2025-03-01T00:00:00.000Z",
+              "endDate": "2025-03-10T00:00:00.000Z",
+              "chaptersRead": 10,
+              "status": "finished",
+              "comment": "Really enjoyed this novel!"
           }
       ]
   }
@@ -271,3 +273,5 @@ The project uses **MongoDB** for the database, which stores all novel details, r
 ## 6. License
 
 This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
+
+---
