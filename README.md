@@ -8,7 +8,7 @@ This is a backend service to track and manage novels, including details about th
 2. [API Endpoints](#2-api-endpoints)
    - [Novels](#novels)
    - [Reading History](#reading-history)
-3. [Authentication] (#3-authentication)
+3. [Authentication](#3-authentication-optional)
 4. [Database](#4-database)
 5. [Setup and Installation](#5-setup-and-installation)
 6. [License](#6-license)
