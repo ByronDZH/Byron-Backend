@@ -1,7 +1,7 @@
 const readingHistoryLogicDB = require('./readingHistoryLogicDB');  // Import database logic
 
 // Controller for getting all reading histories
-exports.getAllReadingHistories = async (req, res) => {
+exports.getAllReadingHistory = async (req, res) => {
     try {
         const histories = await readingHistoryLogicDB.getAllReadingHistories();
         res.status(200).json(histories);

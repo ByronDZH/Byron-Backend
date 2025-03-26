@@ -1,7 +1,7 @@
 const ReadingHistory = require('./readingHistoryModel');  // Import the Mongoose model
 
 // Logic to get all reading histories from the database
-exports.getAllReadingHistories = async () => {
+exports.getAllReadingHistory = async () => {
     try {
         return await ReadingHistory.find();  // Retrieve all reading histories
     } catch (error) {
