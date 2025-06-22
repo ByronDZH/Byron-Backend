@@ -25,12 +25,12 @@ mongoose.connect(DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Import routes for novels, reading history, and authentication
 const novelRoutes = require('./routes/novelRoutes');  // Routes for novels
-const readingHistoryRoutes = require('./routes/readingHistoryRoutes');  // Routes for reading history
+const memberRoutes = require('./routes/memberRoutes');  // Routes for guild members
 const authRoutes = require('./routes/authRoutes');  // Routes for authentication
 
 // Use the routes with a defined prefix
 app.use(`${PREFIX}/novels`, novelRoutes);  // For /novels endpoint
-app.use(`${PREFIX}/reading-history`, readingHistoryRoutes);  // For /reading-history endpoint
+app.use(`${PREFIX}/members`, memberRoutes);  // For /members endpoint
 app.use(`${PREFIX}/auth`, authRoutes);  // For /auth endpoint
 
 // Start the server
