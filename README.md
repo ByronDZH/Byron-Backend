@@ -1,23 +1,77 @@
-# 📚 Byron's Backend API
+# Byron's Backend API
 
-This is the backend built in Node.js + Express + MongoDB.
-No auth at the moment — just clean data.
+A Node.js + Express + MongoDB backend API to manage users and their novel collections.
+Supports user authentication and CRUD operations on novels owned by each user.
 
 ---
 
-## 🌍 Base URL + /Prefix
+## Features
 
-```bash
+* User registration and login with JWT authentication
+* Users can save, update, fetch, and delete their own novels
+* Clean RESTful API design with route prefixing
+* Health check endpoint to keep the service alive
+* MongoDB for data persistence
+
+---
+
+## Base URL
+
+```
 https://byron-backend.onrender.com/Byron-Backend
 ```
 
 ---
 
-## 📖 Novels API
+## API Endpoints Overview
 
-### ➕ Create a Novel
+### Users
 
-**POST** `/novels`
+* **POST** `/users/register` — Register a new user
+* **POST** `/users/login` — Authenticate and receive a JWT token
+
+### Novels (protected by JWT)
+
+* **GET** `/novels` — Get all novels for the authenticated user
+* **POST** `/novels` — Create a new novel for the user
+* **GET** `/novels/:id` — Get a specific novel by ID
+* **PUT** `/novels/:id` — Update a novel by ID
+* **DELETE** `/novels/:id` — Delete a novel by ID
+
+### System
+
+* **GET** `/system/ping` — Health check endpoint (returns "Pong! Service is running.")
+
+---
+
+## Data Model Enums
+
+### Novel `status` field values
+
+* `reading`
+* `finished`
+* `abandoned`
+* `on-hold`
+* `dropped`
+
+---
+
+## Example JSON Payloads
+
+### User Model
+
+```json
+{
+  "username": "byron123",
+  "password": "yourSecurePassword"
+}
+```
+
+> Note: Password should be sent plain here but is hashed on the server before storage.
+
+---
+
+### Novel Model
 
 ```json
 {
@@ -26,147 +80,32 @@ https://byron-backend.onrender.com/Byron-Backend
   "status": "reading",
   "chapters": 34,
   "totalChapters": 270,
-  "approximateDateRead": "2023-06-01",
-  "originalLanguage": "Korean",
-  "genre": "Action",
-  "url": "https://example.com",
   "notes": "MC is busted later on"
 }
 ```
 
-✅ **Response**
+> Note: The `userId` is automatically assigned on the server side from the authenticated user’s ID.
 
-```json
-{
-  "_id": "123abc...",
-  "title": "Solo Leveling",
-  "author": "Chugong",
-  "status": "reading",
-  "chapters": 34,
-  "totalChapters": 270,
-  "approximateDateRead": "2023-06-01T00:00:00.000Z",
-  "originalLanguage": "Korean",
-  "genre": "Action",
-  "url": "https://example.com",
-  "notes": "MC is busted later on",
-  "createdAt": "2025-06-21T00:00:00.000Z",
-  "updatedAt": "2025-06-21T00:00:00.000Z"
-}
-```
+## Data Model Enums
+
+### Novel `status` field values
+
+* `reading`
+* `finished`
+* `abandoned`
+* `on-hold`
+* `dropped`
 
 ---
 
-### 📄 Get All Novels
+## Notes
 
-**GET** `/novels`
-
----
-
-### 📘 Get One Novel
-
-**GET** `/novels/:id`
-
----
-
-### ✏️ Update a Novel
-
-**PUT** `/novels/:id`
-
-```json
-{
-  "status": "finished",
-  "chapters": 270,
-  "notes": "Insane ending"
-}
-```
+* Novels belong to a user, linked via `userId` (MongoDB ObjectId)
+* User documents contain only `username` and hashed `password`
+* All novel endpoints require a valid JWT token in the `Authorization` header:
+  `Authorization: Bearer <token>`
+* CORS is currently open to all origins
+* Passwords are hashed before storage
+* MongoDB free tier may cause cold start delays on first request
 
 ---
-
-### ❌ Delete a Novel
-
-**DELETE** `/novels/:id`
-
-✅ **Response**
-
-```json
-{ "message": "Novel deleted successfully" }
-```
-
----
-
-## 🧙 Guild Members API
-
-### ➕ Create a Member
-
-**POST** `/members`
-
-```json
-{
-  "name": "Zaltor",
-  "rank": "Officer",
-  "joinDate": "2024-05-01",
-  "status": "active",
-  "notes": "Main DPS in raids"
-}
-```
-
-✅ **Response**
-
-```json
-{
-  "_id": "456def...",
-  "name": "Zaltor",
-  "rank": "Officer",
-  "joinDate": "2024-05-01T00:00:00.000Z",
-  "status": "active",
-  "notes": "Main DPS in raids",
-  "createdAt": "2025-06-21T00:00:00.000Z",
-  "updatedAt": "2025-06-21T00:00:00.000Z"
-}
-```
-
----
-
-### 📄 Get All Members
-
-**GET** `/members`
-
----
-
-### 📘 Get One Member
-
-**GET** `/members/:id`
-
----
-
-### ✏️ Update a Member
-
-**PUT** `/members/:id`
-
-```json
-{
-  "status": "active",
-  "notes": "Promoted to Officer"
-}
-```
-
----
-
-### ❌ Delete a Member
-
-**DELETE** `/members/:id`
-
-✅ **Response**
-
-```json
-{ "message": "Member deleted successfully" }
-```
-
----
-
-## ✅ Status Enums
-
-* **Novel Status**: `reading`, `finished`, `abandoned`, `dropped`, `on-hold`
-* **Language**: `Chinese`, `Japanese`, `Korean`, `English`, `Other`, `Unknown`
-* **Member Rank**: `Leader`, `Officer`, `Member`, `Recruit`
-* **Member Status**: `active`, `inactive`

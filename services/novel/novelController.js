@@ -1,75 +1,69 @@
-const novelLogicDB = require('./novelLogicDB');  // Import database logic
+const {
+  createNovel,
+  getUserNovels,
+  getUserNovelById,
+  updateUserNovel,
+  deleteUserNovel
+} = require('./novelLogicDB');
 
-// Controller for getting all novels
-exports.getAllNovels = async (req, res) => {
-    try {
-        const novels = await novelLogicDB.getAllNovels();
-        res.status(200).json(novels);
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to retrieve novels', error: error.message });
-    }
-};
+// 🔼 POST /novels
+async function createNovel(req, res) {
+  try {
+    const novel = await createNovel(req.body, req.user.id);
+    res.status(201).json(novel);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to create novel', details: err.message });
+  }
+}
 
-// Controller for creating a new novel
-exports.createNovel = async (req, res) => {
-    const { title, author, totalChapters, url, genre, originalLanguage } = req.body;
-    try {
-        const newNovel = await novelLogicDB.createNovel({
-            title,
-            author,
-            totalChapters,
-            url,
-            genre,
-            originalLanguage,
-        });
-        res.status(201).json(newNovel);
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to create novel', error: error.message });
-    }
-};
+// 📄 GET /novels
+async function getAllNovels(req, res) {
+  try {
+    const novels = await getUserNovels(req.user.id);
+    res.json(novels);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch novels', details: err.message });
+  }
+}
 
-// Controller for getting a single novel by ID
-exports.getNovelById = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const novel = await novelLogicDB.getNovelById(id);
-        if (novel) {
-            res.status(200).json(novel);
-        } else {
-            res.status(404).json({ message: 'Novel not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to retrieve novel', error: error.message });
-    }
-};
+// 📘 GET /novels/:id
+async function getNovelById(req, res) {
+  try {
+    const novel = await getUserNovelById(req.params.id, req.user.id);
+    if (!novel) return res.status(404).json({ error: 'Novel not found' });
+    res.json(novel);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch novel', details: err.message });
+  }
+}
 
-// Controller for updating a novel
-exports.updateNovel = async (req, res) => {
-    const { id } = req.params;
-    const updateData = req.body;
-    try {
-        const updatedNovel = await novelLogicDB.updateNovel(id, updateData);
-        if (updatedNovel) {
-            res.status(200).json(updatedNovel);
-        } else {
-            res.status(404).json({ message: 'Novel not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to update novel', error: error.message });
-    }
-};
+// ✏️ PUT /novels/:id
+async function updateNovel(req, res) {
+  try {
+    const updated = await updateUserNovel(req.params.id, req.user.id, req.body);
+    if (!updated) return res.status(404).json({ error: 'Novel not found or unauthorized' });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update novel', details: err.message });
+  }
+}
 
-// Controller for deleting a novel
-exports.deleteNovel = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const deletedNovel = await novelLogicDB.deleteNovel(id);
-        if (deletedNovel) {
-            res.status(200).json({ message: 'Novel deleted successfully' });
-        } else {
-            res.status(404).json({ message: 'Novel not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to delete novel', error: error.message });
-    }
+// ❌ DELETE /novels/:id
+async function deleteNovel(req, res) {
+  try {
+    const deleted = await deleteUserNovel(req.params.id, req.user.id);
+    if (!deleted) return res.status(404).json({ error: 'Novel not found or unauthorized' });
+    res.json({ message: 'Novel deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete novel', details: err.message });
+  }
+}
+
+module.exports = {
+  createNovel,
+  getAllNovels,
+  getNovelById,
+  updateNovel,
+  deleteNovel
 };
+// services/novel/novelController.js

@@ -25,13 +25,20 @@ mongoose.connect(DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Import routes for novels, reading history, and authentication
 const novelRoutes = require('./routes/novelRoutes');  // Routes for novels
-const memberRoutes = require('./routes/memberRoutes');  // Routes for guild members
-const authRoutes = require('./routes/authRoutes');  // Routes for authentication
+const systemRoutes = require('./routes/systemRoutes'); // Routes for system health checks
+const userRoutes = require('./routes/userRoutes');  // Routes for user registration and login
 
 // Use the routes with a defined prefix
-app.use(`${PREFIX}/novels`, novelRoutes);  // For /novels endpoint
-app.use(`${PREFIX}/members`, memberRoutes);  // For /members endpoint
-app.use(`${PREFIX}/auth`, authRoutes);  // For /auth endpoint
+app.use(`${PREFIX}/novels`, novelRoutes);  // For /novels endpoint with authentication
+app.use(`${PREFIX}/system`, systemRoutes);  // For /system endpoint
+app.use(`${PREFIX}/users`, userRoutes);  // For /users endpoint
+
+//
+// Health check endpoint to keep the service alive
+// app.get(`${PREFIX}/ping`, (req, res) => {
+//     res.status(200).json({ message: 'Pong! Service is running.' });
+// });
+//
 
 // Start the server
 app.listen(PORT, () => {

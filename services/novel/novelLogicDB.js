@@ -1,47 +1,40 @@
-const Novel = require('./novelModel');  // Import the Mongoose model
+const Novel = require('./novelModel');
 
-// Logic to get all novels from the database
-exports.getAllNovels = async () => {
-    try {
-        return await Novel.find();  // Retrieve all novels
-    } catch (error) {
-        throw new Error('Failed to get novels: ' + error.message);
-    }
-};
+// 🟢 Create a novel for a specific user
+async function createNovel(novelData, userId) {
+    const novel = await Novel.create({ ...novelData, userId });
+    return novel;
+}
 
-// Logic to create a new novel in the database
-exports.createNovel = async (novelData) => {
-    const novel = new Novel(novelData);
-    try {
-        return await novel.save();  // Save the new novel to the database
-    } catch (error) {
-        throw new Error('Failed to create novel: ' + error.message);
-    }
-};
+// 📖 Get all novels for a user
+async function getUserNovels(userId) {
+    return Novel.find({ userId }).sort({ updatedAt: -1 });
+}
 
-// Logic to get a single novel by ID from the database
-exports.getNovelById = async (id) => {
-    try {
-        return await Novel.findById(id);  // Find novel by its ID
-    } catch (error) {
-        throw new Error('Failed to get novel: ' + error.message);
-    }
-};
+// 📘 Get one novel (only if it belongs to the user)
+async function getUserNovelById(id, userId) {
+    return Novel.findOne({ _id: id, userId });
+}
 
-// Logic to update a novel in the database
-exports.updateNovel = async (id, updateData) => {
-    try {
-        return await Novel.findByIdAndUpdate(id, updateData, { new: true });  // Update the novel and return the updated document
-    } catch (error) {
-        throw new Error('Failed to update novel: ' + error.message);
-    }
-};
+// ✏️ Update novel if owned by user
+async function updateUserNovel(id, userId, updateData) {
+    return Novel.findOneAndUpdate(
+        { _id: id, userId },
+        updateData,
+        { new: true }
+    );
+}
 
-// Logic to delete a novel from the database
-exports.deleteNovel = async (id) => {
-    try {
-        return await Novel.findByIdAndDelete(id);  // Delete the novel by its ID
-    } catch (error) {
-        throw new Error('Failed to delete novel: ' + error.message);
-    }
+// ❌ Delete novel if owned by user
+async function deleteUserNovel(id, userId) {
+    return Novel.findOneAndDelete({ _id: id, userId });
+}
+
+module.exports = {
+    createNovel,
+    getUserNovels,
+    getUserNovelById,
+    updateUserNovel,
+    deleteUserNovel
 };
+// This file handles the logic for creating, retrieving, updating, and deleting novels
