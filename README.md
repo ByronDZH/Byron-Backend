@@ -44,18 +44,6 @@ https://byron-backend.onrender.com/Byron-Backend
 
 ---
 
-## Data Model Enums
-
-### Novel `status` field values
-
-* `reading`
-* `finished`
-* `abandoned`
-* `on-hold`
-* `dropped`
-
----
-
 ## Example JSON Payloads
 
 ### User Model

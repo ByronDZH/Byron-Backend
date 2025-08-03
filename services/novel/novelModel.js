@@ -5,8 +5,8 @@ const novelSchema = new mongoose.Schema({
     author: { type: String },
     status: {
         type: String,
-        enum: ['reading', 'finished', 'abandoned', 'on-hold', 'dropped'],
-        default: 'reading',
+        enum: ['reading', 'finished', 'on-hold', 'dropped'],
+        default: 'on-hold',
     },
     chapters: { type: Number, default: 0 },
     totalChapters: { type: Number }, // optional
